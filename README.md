@@ -1,6 +1,6 @@
 # meetup-app
 
 ## START
-    ```
-    docker-compose up
-    ```
+```
+docker-compose up
+```
