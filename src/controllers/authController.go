@@ -35,10 +35,10 @@ func Register(c *fiber.Ctx) error {
 	}
 
 	user := models.User{
-		FirstName: data["first_name"],
-		LastName:  data["last_name"],
-		Email:     data["email"],
-		Ismeetup:  false,
+		FirstName:    data["first_name"],
+		LastName:     data["last_name"],
+		Email:        data["email"],
+		IsAmbassador: false,
 	}
 
 	user.SetPassword(data["password"])
