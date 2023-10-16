@@ -12,7 +12,7 @@ services:
       - db
   
   db:
-    image: arm64v8/mysql:oracle
+    image: mysql:oracle
     restart: always
     environment:
       - MYSQL_DATABASE=meetup
