@@ -13,21 +13,16 @@ var DB *gorm.DB
 func Connect() {
 	var err error
 
-	connected := false
-
-	for !connected {
+	for i := 0; i < 5; i++ {
 		DB, err = gorm.Open(mysql.Open("admin:admin@tcp(db:3306)/meetup"), &gorm.Config{})
 
 		if err != nil {
-			// panic("Could not connect to database!")
-			time.Sleep(1000)
+			time.Sleep(time.Second)
 		} else {
-			connected = true
-			break
+			return
 		}
-
 	}
-
+	panic("Could not connect to database!")
 }
 
 func AutoMigrate() {
