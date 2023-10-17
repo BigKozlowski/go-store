@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"meetup/src/controllers"
-	"meetup/src/middlewares"
+	"store/src/controllers"
+	"store/src/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,4 +19,5 @@ func Setup(app *fiber.App) {
 	adminAuthenticated.Post("/logout", controllers.Logout)
 	adminAuthenticated.Put("users/info", controllers.UpdateInfo)
 	adminAuthenticated.Put("users/password", controllers.UpdatePassword)
+	adminAuthenticated.Get("ambassadors", controllers.Ambassadors)
 }

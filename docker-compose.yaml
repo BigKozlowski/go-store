@@ -10,12 +10,12 @@ services:
       - .:/app
     depends_on:
       - db
-  
+
   db:
     image: arm64v8/mysql:oracle
     restart: always
     environment:
-      - MYSQL_DATABASE=meetup
+      - MYSQL_DATABASE=store
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=admin
       - MYSQL_ROOT_PASSWORD=root

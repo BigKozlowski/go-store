@@ -1,7 +1,7 @@
 package database
 
 import (
-	"meetup/src/models"
+	"store/src/models"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -14,7 +14,7 @@ func Connect() {
 	var err error
 
 	for i := 0; i < 5; i++ {
-		DB, err = gorm.Open(mysql.Open("admin:admin@tcp(db:3306)/meetup"), &gorm.Config{})
+		DB, err = gorm.Open(mysql.Open("admin:admin@tcp(db:3306)/store"), &gorm.Config{})
 
 		if err != nil {
 			time.Sleep(time.Second)

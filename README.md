@@ -1,4 +1,4 @@
-# meetup-app
+# store-app
 
 ## START
 ```

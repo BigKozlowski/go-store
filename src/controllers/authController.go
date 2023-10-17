@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"meetup/src/database"
-	"meetup/src/middlewares"
-	"meetup/src/models"
+	"store/src/database"
+	"store/src/middlewares"
+	"store/src/models"
 	"strconv"
 	"time"
 
