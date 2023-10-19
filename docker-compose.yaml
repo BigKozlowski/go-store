@@ -10,9 +10,10 @@ services:
       - .:/app
     depends_on:
       - db
+      - redis
 
   db:
-    image: mysql:oracle
+    image: arm64v8/mysql:oracle
     restart: always
     environment:
       - MYSQL_DATABASE=store
@@ -23,3 +24,8 @@ services:
       - .dbdata:/var/lib/mysql
     ports:
       - 33066:3306
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
