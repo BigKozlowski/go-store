@@ -32,13 +32,13 @@ func Setup(app *fiber.App) {
 
 	ambassador.Post("register", controllers.Register)
 	ambassador.Post("login", controllers.Login)
+	ambassador.Get("/products/frontend", controllers.ProductsFrontend)
 
 	ambassadorAuthenticated := ambassador.Use(middlewares.IsAuthenticated)
 	ambassadorAuthenticated.Get("user", controllers.User)
 	ambassadorAuthenticated.Post("logout", controllers.Logout)
 	ambassadorAuthenticated.Put("/users/info", controllers.UpdateInfo)
 	ambassadorAuthenticated.Put("/users/password", controllers.UpdatePassword)
-	// ambassadorAuthenticated.Get("/products/frontend")
 	// ambassadorAuthenticated.Get("/products/backend")
 	// ambassadorAuthenticated.Post("/links")
 	// ambassadorAuthenticated.Get("/stats")
