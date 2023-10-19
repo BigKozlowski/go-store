@@ -116,8 +116,9 @@ func ProductsBackend(c *fiber.Ctx) error {
 	var foundProducts []models.Product
 
 	if s := c.Query("s"); s != "" {
+		lower := strings.ToLower(s)
 		for _, product := range products {
-			if strings.Contains(product.Title, s) {
+			if strings.Contains(strings.ToLower(product.Title), lower) || strings.Contains(strings.ToLower(product.Description), lower) {
 				foundProducts = append(foundProducts, product)
 			}
 		}
