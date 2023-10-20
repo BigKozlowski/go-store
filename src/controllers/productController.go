@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"encoding/json"
+	"sort"
 	"store/src/database"
 	"store/src/models"
 	"strconv"
@@ -124,6 +125,19 @@ func ProductsBackend(c *fiber.Ctx) error {
 		}
 	} else {
 		foundProducts = products
+	}
+
+	if sortParam := c.Query("sort"); sortParam != "" {
+		sortLower := strings.ToLower(sortParam)
+		if sortLower == "asc" {
+			sort.Slice(foundProducts, func(i, j int) bool {
+				return foundProducts[i].Price < foundProducts[j].Price
+			})
+		} else if sortLower == "dsc" {
+			sort.Slice(foundProducts, func(i, j int) bool {
+				return foundProducts[i].Price > foundProducts[j].Price
+			})
+		}
 	}
 
 	return c.JSON(foundProducts)
