@@ -57,11 +57,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 
 	database.DB.Model(&product).Updates(&product)
 
-	go func(keys ...string) {
-		for _, key := range keys {
-			database.ClearCache(key)
-		}
-	}("products_frontend", "products_backend")
+	go database.ClearCache("products_frontend", "products_backend")
 
 	return c.JSON(product)
 }

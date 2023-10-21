@@ -22,13 +22,16 @@ func SetupCacheChannel() {
 
 	go func(ch chan string) {
 		for {
-			Cache.Del(context.Background(), <-ch)
+			key := <-ch
+			Cache.Del(context.Background(), key)
 
-			fmt.Println("Cache Cleared")
+			fmt.Println("Cache Cleared: " + key + "\n")
 		}
 	}(CacheChannel)
 }
 
-func ClearCache(key string) {
-	CacheChannel <- key
+func ClearCache(keys ...string) {
+	for _, key := range keys {
+		CacheChannel <- key
+	}
 }
