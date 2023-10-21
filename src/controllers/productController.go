@@ -59,15 +59,11 @@ func UpdateProduct(c *fiber.Ctx) error {
 
 	go func(keys ...string) {
 		for _, key := range keys {
-			deleteCache(key)
+			database.ClearCache(key)
 		}
 	}("products_frontend", "products_backend")
 
 	return c.JSON(product)
-}
-
-func deleteCache(key string) {
-	database.Cache.Del(context.Background(), key)
 }
 
 func DeleteProduct(c *fiber.Ctx) error {
