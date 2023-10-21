@@ -146,3 +146,31 @@ func CreateOrder(c *fiber.Ctx) error {
 
 	return c.JSON(source)
 }
+
+func CompleteOrder(c *fiber.Ctx) error {
+	var data map[string]string
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	order := models.Order{}
+
+	database.DB.Preload("OrderItems").First(&order, models.Order{
+		TransactionId: data["source"],
+	})
+
+	if order.Id == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "Order not found",
+		})
+	}
+
+	order.Complete = true
+	database.DB.Save(&order)
+
+	return c.JSON(fiber.Map{
+		"message": "success",
+	})
+}

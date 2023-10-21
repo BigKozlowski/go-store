@@ -13,7 +13,7 @@ func Setup(app *fiber.App) {
 	// TODO: implement checkout
 	api.Get("/checkout/links/:code", controllers.GetLink)
 	api.Post("/checkout/orders", controllers.CreateOrder)
-	// api.Post("/checkout/orders/confirm")
+	api.Post("/checkout/orders/confirm", controllers.CompleteOrder)
 
 	admin := api.Group("admin")
 	admin.Post("/register", controllers.Register)
