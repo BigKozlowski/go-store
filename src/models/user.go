@@ -25,6 +25,10 @@ func (user *User) CheckPassword(password string) error {
 	return err
 }
 
+func (user *User) Name() string {
+	return user.FirstName + " " + user.LastName
+}
+
 type Admin User
 
 type Ambassador User
