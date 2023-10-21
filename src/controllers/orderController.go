@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"context"
+	"encoding/json"
 	"store/src/database"
 	"store/src/models"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/checkout/session"
@@ -170,7 +173,49 @@ func CompleteOrder(c *fiber.Ctx) error {
 	order.Complete = true
 	database.DB.Save(&order)
 
+	go func(order models.Order) {
+		ambassadorRevenue := 0.0
+		adminRevenue := 0.0
+
+		for _, item := range order.OrderItems {
+			ambassadorRevenue += item.AmbassadorRevenue
+			adminRevenue += item.AdminRevenue
+		}
+
+		user := models.User{}
+		user.Id = order.UserId
+
+		database.DB.First(&user)
+
+		//TODO: fix, admin email instead of ambassador in order
+		var rankings []map[string]float64
+
+		result, err := database.Cache.Get(context.Background(), "rankings").Result()
+		if err == nil {
+			json.Unmarshal([]byte(result), &rankings)
+			if !isUserInCache(rankings, user.Name()) {
+				database.Cache.ZAdd(context.Background(), "rankings", &redis.Z{
+					Score:  *user.Revenue,
+					Member: user.Name(),
+				})
+			}
+		}
+
+		database.Cache.ZIncrBy(context.Background(), "rankings", ambassadorRevenue, user.Name())
+	}(order)
+
 	return c.JSON(fiber.Map{
 		"message": "success",
 	})
+}
+
+func isUserInCache(cache []map[string]float64, name string) bool {
+	for _, user := range cache {
+		for k := range user {
+			if name == k {
+				return true
+			}
+		}
+	}
+	return false
 }
