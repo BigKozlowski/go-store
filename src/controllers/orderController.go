@@ -48,7 +48,7 @@ func CreateOrder(c *fiber.Ctx) error {
 		Code: request.Code,
 	}
 
-	database.DB.Preload("User").First(&link)
+	database.DB.Preload("User").Where("code = ?", link.Code).First(&link)
 
 	if link.Id == 0 {
 		c.Status(fiber.StatusBadRequest)
@@ -187,7 +187,6 @@ func CompleteOrder(c *fiber.Ctx) error {
 
 		database.DB.First(&user)
 
-		//TODO: fix, admin email instead of ambassador in order
 		var rankings []map[string]float64
 
 		result, err := database.Cache.Get(context.Background(), "rankings").Result()

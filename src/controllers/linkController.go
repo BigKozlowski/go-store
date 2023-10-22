@@ -99,7 +99,7 @@ func GetLink(c *fiber.Ctx) error {
 		Code: code,
 	}
 
-	database.DB.Preload("User").Preload("Products").First(&link)
+	database.DB.Preload("User").Where("id = ?", code).Preload("Products").First(&link)
 
 	return c.JSON(link)
 }
